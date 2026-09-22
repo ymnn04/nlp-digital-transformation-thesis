@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+*.swp
+
+# 流水线中间缓存（如有）
+code/__pycache__/

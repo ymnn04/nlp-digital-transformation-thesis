@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="docx-page-size" content="A4">
+  <title>基于年报文本的企业数字化转型测度及其对经营绩效的影响研究</title>
+  <style>
+  @page {
+    @bottom-center { content: counter(page); }
+  }
+  @page cover {
+    @bottom-center { content: none; }
+  }
+  section[role="cover"] { page: cover; }
+
+  :root {
+    /* design tokens: academic-paper (compiled) */
+    --typography-fontFamily-heading: "黑体", SimHei;
+    --typography-fontFamily-body: "宋体", SimSun;
+    --typography-fontFamily-bodyLatin: "Times New Roman", serif;
+    --typography-fontFamily-caption: "宋体", SimSun;
+    --typography-fontFamily-code: "Courier New", Consolas, monospace;
+    --typography-fontSize-title: 18pt;
+    --typography-fontSize-h1: 15pt;
+    --typography-fontSize-h2: 14pt;
+    --typography-fontSize-h3: 12pt;
+    --typography-fontSize-body: 12pt;
+    --typography-fontSize-abstract: 11pt;
+    --typography-fontSize-caption: 10.5pt;
+    --typography-fontSize-footnote: 9pt;
+    --typography-lineHeight-body: 1.5;
+    --typography-lineHeight-abstract: 1.25;
+    --typography-lineHeight-heading: 1.5;
+    --typography-fontWeight-heading: bold;
+    --typography-fontWeight-body: normal;
+    --typography-fontWeight-caption: normal;
+    --color-primary: #000000;
+    --color-text: #000000;
+    --color-heading: #000000;
+    --color-link: #0000EE;
+    --color-tableHeaderBg: #f0f0f0;
+    --color-tableBorder: #000000;
+    --color-background: #ffffff;
+    --spacing-paragraph: 0.5em;
+    --spacing-paragraphAfter: 0.5em;
+    --spacing-indent: 2em;
+    --spacing-sectionGap: 1.5em;
+    --spacing-abstractIndent: 3em;
+    --layout-marginTop: 3.0cm;
+    --layout-marginBottom: 2.5cm;
+    --layout-marginLeft: 3.0cm;
+    --layout-marginRight: 2.5cm;
+    --layout-pageSize: A4;
+    --layout-columnCount: 1;
+    --layout-contentWidth: 16.0cm;
+
+    /* aliases */
+    --fs-h1: var(--typography-fontSize-h1);
+    --fs-h2: var(--typography-fontSize-h2);
+    --fs-h3: var(--typography-fontSize-h3);
+    --fs-body: var(--typography-fontSize-body);
+    --fs-abstract: var(--typography-fontSize-abstract);
+    --fs-small: var(--typography-fontSize-caption);
+    --fs-cover-title: var(--typography-fontSize-title);
+    --ff-heading: var(--typography-fontFamily-heading);
+    --ff-body: var(--typography-fontFamily-body);
+    --lh-body: var(--typography-lineHeight-body);
+    --fw-bold: var(--typography-fontWeight-heading);
+    --fw-normal: var(--typography-fontWeight-body);
+    --spacing-paragraph: var(--spacing-paragraph);
+    --spacing-section: var(--spacing-sectionGap);
+    --spacing-block: var(--spacing-sectionGap);
+    --margin-page: var(--layout-marginLeft);
+    --page-content-width: var(--layout-contentWidth);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--color-text);
+    background: var(--color-background);
+    max-width: var(--page-content-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--spacing-block) 0;
+  }
+
+  h1, h2, h3 { font-family: var(--ff-heading); font-weight: var(--fw-bold); }
+  h1 { font-size: var(--fs-h1); margin-bottom: var(--spacing-block); }
+  h2 { font-size: var(--fs-h2); margin-top: var(--spacing-section); margin-bottom: var(--spacing-paragraph); }
+  h3 { font-size: var(--fs-h3); margin-top: var(--spacing-block); margin-bottom: var(--spacing-paragraph); }
+  p { margin-bottom: var(--spacing-paragraph); text-indent: var(--spacing-indent); }
+
+  /* Cover: every block declares its own text-align */
+  .cover-eyebrow { text-align: center; font-size: var(--fs-h3); margin-top: var(--spacing-section); }
+  .cover-title { text-align: center; font-size: var(--fs-cover-title); font-weight: var(--fw-bold); margin-top: var(--spacing-section); margin-bottom: var(--spacing-block); }
+  .cover-subtitle { text-align: center; font-size: var(--fs-h3); font-weight: var(--fw-normal); margin-bottom: var(--spacing-section); }
+  .cover-meta { margin-top: var(--spacing-section); }
+  .cover-info-list { border-collapse: collapse; margin: 0 auto; }
+  .cover-info-list td { padding: 0.3em 0.8em; font-size: var(--fs-body); vertical-align: top; border: none; }
+  .cover-info-list td:first-child { text-align: right; font-weight: var(--fw-normal); white-space: nowrap; }
+  .cover-info-list td:last-child { text-align: left; }
+  .cover-date { text-align: center; margin-top: var(--spacing-section); }
+
+  /* Abstract */
+  .abstract { margin-bottom: var(--spacing-section); padding: var(--spacing-block); border-left: 3px solid var(--color-text); }
+  .abstract-heading { font-weight: var(--fw-bold); margin-bottom: var(--spacing-paragraph); text-indent: 0; text-align: left; }
+  .abstract-text { text-indent: 0; font-size: var(--fs-abstract); line-height: var(--typography-lineHeight-abstract); text-align: justify; }
+  .keywords { margin-top: var(--spacing-paragraph); text-indent: 0; font-size: var(--fs-abstract); text-align: left; }
+  .demo-note { font-size: var(--fs-small); text-indent: 0; border-left: 3px solid var(--color-text); background: var(--color-tableHeaderBg); padding: var(--spacing-paragraph); margin-bottom: var(--spacing-section); text-align: justify; }
+
+  /* TOC */
+  .doc-toc { margin-bottom: var(--spacing-section); }
+  .toc-title { text-align: center; font-weight: var(--fw-bold); font-size: var(--fs-h2); text-indent: 0; margin-bottom: var(--spacing-paragraph); }
+  .toc-list, .toc-list ol, .toc-list ul { list-style: none; list-style-type: none; padding-left: 1.5em; }
+  .toc-list li { margin-bottom: var(--spacing-paragraph); text-indent: 0; text-align: left; }
+  .toc-list a { color: var(--color-text); text-decoration: none; }
+  .toc-l3 { padding-left: 2em; font-size: var(--fs-body); }
+
+  /* Three-line table */
+  .three-line-table { border-collapse: collapse; width: 100%; margin-bottom: var(--spacing-block); }
+  .three-line-table caption { font-size: var(--fs-small); margin-bottom: var(--spacing-paragraph); text-align: center; caption-side: top; }
+  .three-line-table thead tr:first-child { border-top: 2px solid var(--color-tableBorder); }
+  .three-line-table thead tr:last-child { border-bottom: 1px solid var(--color-tableBorder); }
+  .three-line-table tbody tr:last-child { border-bottom: 2px solid var(--color-tableBorder); }
+  .three-line-table td, .three-line-table th { border-left: none; border-right: none; padding: 0.4em 0.8em; text-align: left; font-weight: var(--fw-normal); }
+  .three-line-table th { font-weight: var(--fw-bold); background: transparent; }
+  .table-note { font-size: var(--fs-small); text-indent: 0; text-align: left; margin-bottom: var(--spacing-block); }
+
+  /* Figure */
+  figure { margin: var(--spacing-block) 0; text-align: center; }
+  figcaption { font-size: var(--fs-small); color: var(--color-text); margin-top: var(--spacing-paragraph); text-align: center; text-indent: 0; }
+
+  /* Formula */
+  .formula { text-align: center; text-indent: 0; margin: var(--spacing-paragraph) 0; }
+
+  /* References */
+  .references { margin-top: var(--spacing-section); }
+  .reference-list { padding-left: 2em; }
+  .reference-item { margin-bottom: var(--spacing-paragraph); font-size: var(--fs-small); text-align: left; text-indent: 0; }
+  </style>
+</head>
+<body>
+  <section role="cover">
+    <p class="cover-eyebrow">毕业论文（预演）模拟稿</p>
+    <h1 class="cover-title">基于年报文本的企业数字化转型测度<br>及其对经营绩效的影响研究</h1>
+    <p class="cover-subtitle">——NLP文本测度方法预演论文</p>
+    <div class="cover-meta">
+      <table class="cover-info-list">
+        <tr><td>学　　校</td><td>大连财经学院</td></tr>
+        <tr><td>专　　业</td><td>大数据管理与应用</td></tr>
+        <tr><td>学生姓名</td><td>×××</td></tr>
+        <tr><td>学　　号</td><td>×××</td></tr>
+        <tr><td>指导教师</td><td>×××</td></tr>
+      </table>
+    </div>
+    <p class="cover-date">2026年9月</p>
+  </section>
+
+  <section role="body" data-page-restart="1">
+    <nav class="doc-toc" aria-label="目录">
+      <p class="toc-title">目录</p>
+      <ol class="toc-list">
+        <li><a href="#toc-abstract">摘要</a></li>
+        <li><a href="#toc-1">一、绪论</a>
+          <ol class="toc-l3">
+            <li><a href="#toc-1-1">（一）选题背景</a></li>
+            <li><a href="#toc-1-2">（二）研究意义</a></li>
+            <li><a href="#toc-1-3">（三）文献综述与研究缺口</a></li>
+          </ol>
+        </li>
+        <li><a href="#toc-2">二、研究设计与方法</a>
+          <ol class="toc-l3">
+            <li><a href="#toc-2-1">（一）总体技术路线：五步流水线</a></li>
+            <li><a href="#toc-2-2">（二）变量定义</a></li>
+          </ol>
+        </li>
+        <li><a href="#toc-3">三、实证分析</a>
+          <ol class="toc-l3">
+            <li><a href="#toc-3-1">（一）描述性统计</a></li>
+            <li><a href="#toc-3-2">（二）信度检验</a></li>
+            <li><a href="#toc-3-3">（三）效度检验</a></li>
+            <li><a href="#toc-3-4">（四）回归分析</a></li>
+            <li><a href="#toc-3-5">（五）稳健性讨论与结果解读</a></li>
+          </ol>
+        </li>
+        <li><a href="#toc-4">四、结论与展望</a>
+          <ol class="toc-l3">
+            <li><a href="#toc-4-1">（一）主要发现</a></li>
+            <li><a href="#toc-4-2">（二）局限性</a></li>
+            <li><a href="#toc-4-3">（三）未来展望</a></li>
+          </ol>
+        </li>
+        <li><a href="#toc-ref">参考文献</a></li>
+      </ol>
+    </nav>
+
+    <div class="abstract" id="toc-abstract" aria-label="摘要">
+      <p class="abstract-heading">摘　要</p>
+      <p class="abstract-text">在数字经济与实体经济深度融合的背景下，如何从非结构化文本中定量测度企业数字化转型程度，是大数据管理领域的重要方法问题。本文以企业年度报告"管理层讨论与分析"（MD&amp;A）文本为对象，演示了一套完整的NLP文本测度构建流水线：①文本获取；②文本预处理；③词典与特征构建；④测度计算（形成企业—年份面板）；⑤信效度检验与实证回归。基于60家演示企业2020—2024年共300个观测的流水线结果显示：五维度词频的Cronbach's α为0.791，达到可接受标准；维度间相关系数介于0.35—0.54之间，均显著为正，支持测度的内部结构；以数字化转型测度为核心的回归中，测度对ROA的回归系数为0.0096（t=6.16），在1%水平显著为正。结果表明该测度流水线具有良好的信度与效度表现，可为基于真实年报数据的实证研究提供可直接复用的方法模板。</p>
+      <p class="keywords"><strong>关键词：</strong>数字化转型；文本分析；词频词典法；测度构建；信效度检验</p>
+    </div>
+
+    <p class="demo-note">&nbsp;&nbsp;作者说明：本文为课程"预演毕业论文"作业的方法模拟稿。文中语料与财务数据为脚本生成的演示数据（可由代码仓库一键复现），仅用于完整展示NLP测度构建方法流程，不构成对任何真实企业的实证结论；替换为真实年报数据后，全流程可直接复用。</p>
+
+    <main class="paper-body">
+      <div id="section-introduction">
+        <h2 id="toc-1">一、绪论</h2>
+        <h3 id="toc-1-1">（一）选题背景</h3>
+        <p>近年来，数字经济已成为重组全球要素资源、重塑经济结构的关键力量。党的二十大报告明确提出"加快发展数字经济，促进数字经济和实体经济深度融合"。在此背景下，微观企业层面的数字化转型进程如何量化，成为学术研究与政策评估共同面临的基础性问题。与研发投入、专利数量等传统"硬指标"不同，数字化转型是一个内涵宽泛、维度多元的过程性构念，单一财务指标难以刻画其全貌。</p>
+        <p>与此同时，企业年度报告中的"管理层讨论与分析"（MD&amp;A）章节以自然语言形式记录了管理层对企业战略、经营状况与前景的主观判断，其中关于人工智能、大数据、云计算、区块链等技术的披露频次，被视为企业数字化转型意愿与进程的文本信号。非结构化文本数据的规模化可得，加上中文分词、词频统计等自然语言处理（NLP）技术的成熟，使得"从文本中构造变量"（文本测度）成为大数据管理领域近年来最重要的方法创新之一。掌握"文本获取—预处理—特征构建—测度计算—信效度检验"的完整流水线，是大数据管理专业学生从"会用数据"走向"会造数据（变量）"的关键一步。</p>
+        <h3 id="toc-1-2">（二）研究意义</h3>
+        <p>理论上，本文系统演示了词频词典法从原始文本到面板变量的全流程，重点回应了文本测度研究中最容易被忽视的环节——信度与效度检验。以往部分研究直接使用词频而不报告其测量质量，本文将心理测量学中的Cronbach's α系数与维度相关分析引入五维度词频结构，为文本测度的可靠性提供了可操作的检验方案。</p>
+        <p>实践与方法层面，本文形成了三个可复用成果：其一，一套包含五个子维度的企业数字化转型示例子词典；其二，一条可一键复现的Python五步流水线（含演示语料生成器）；其三，一组标准化的信效度检验输出表（信效度汇总表、维度相关矩阵、回归结果表）。研究者在替换为真实年报语料后，即可直接复用整套流程开展实证研究，显著降低文本测度的入门门槛。</p>
+        <h3 id="toc-1-3">（三）文献综述与研究缺口</h3>
+        <p>数字化转型的研究脉络方面，Vial（2019）通过对282篇文献的系统梳理，将数字化转型界定为"信息、计算、沟通与连接技术的组合引发实体属性重大变化的过程"，并指出其测度亟待微观化操作。国内研究方面，吴非等（2021）基于2007—2019年上市公司年报文本，从人工智能、大数据、云计算、区块链、数字技术应用五个维度构建数字化转型词频词典，开创了国内年报文本测度的主流范式；袁淳等（2021）利用同类测度考察了数字化转型对企业分工的影响；赵宸宇等（2021）则发现数字化转型显著提升了企业全要素生产率。</p>
+        <p>文本测度方法方面，Loughran和McDonald（2011）针对10-K年报构建金融领域情感词典的开创性工作表明，通用词典在专业语料上存在系统性偏差，领域词典的构建与检验是文本测度有效性的前提。</p>
+        <p>综观现有文献，仍存在两方面不足：其一，多数研究将重心放在"测度—结果"关系上，对测度本身的信度（内部一致性）与效度（维度结构、效标关联）报告不足，读者难以判断词频指标的测量质量；其二，方法流程的透明度与可复现性不足，原始文本、分词方案、词典版本往往未完整公开，后续研究者难以复制。据此，本文的研究缺口（Gap）可归纳为：<strong>缺乏一条"流程完整、检验完备、代码可复现"的年报文本测度方法示范</strong>。本文的目的即以一条可运行的流水线填补该缺口，并将信效度检验内嵌为流水线的固定环节。</p>
+      </div>
+
+      <div id="section-methods">
+        <h2 id="toc-2">二、研究设计与方法</h2>
+        <h3 id="toc-2-1">（一）总体技术路线：五步流水线</h3>
+        <p>本文将NLP测度构建过程规范化为五步流水线：<strong>Step 1 文本获取→ Step 2 文本预处理→ Step 3 词典与特征构建→ Step 4 测度计算→ Step 5 信效度检验与实证应用</strong>。每一步均有独立的Python脚本、标准化的输入输出文件与质量检查点，全部代码公开于代码仓库，可一键复现。</p>
+        <p><strong>Step 1 文本获取</strong>：真实研究中，年报全文可通过巨潮资讯网（http://www.cninfo.com.cn）按"股票代码+年度"检索下载，使用pdfplumber等工具提取文本后截取MD&amp;A章节；亦可使用CNRDS、WinGo等学术文本数据库直接获取结构化年报文本。获取环节需登记语料清单（公司、年份、行业、文本长度）并进行完整性质检（如剔除文本长度低于阈值、重复披露的样本）。需要特别说明的是，本文为课程方法模拟稿，该环节使用脚本生成的<strong>演示语料</strong>（60家演示企业×2020—2024年，共300条模拟MD&amp;A文本，每条约500—700字符），演示语料按行业设置差异化的数字化语句强度（信息技术行业最高、农林牧渔最低），并随年份温和上升，以模拟真实年报的典型文本特征；配套的演示财务数据同样由脚本生成，用于演示效标关联效度检验。</p>
+        <p><strong>Step 2 文本预处理</strong>：依次执行三项操作。①正则清洗：剔除URL、乱码与冗余符号，仅保留中英文、数字及常用符号；②中文分词：采用jieba分词（精确模式），并加入"数字化转型""工业互联网""数字人民币""业财一体"等30余个领域自定义词，避免专业术语被误切；③去停用词：基于自建停用词表剔除"的""了""公司""报告"等高频虚词与通用词（词长≤1的词元同步剔除）。预处理后平均每条语料约166个有效词。</p>
+        <p><strong>Step 3 词典与特征构建</strong>：主特征采用词典法。参考吴非等（2021）的维度划分思想，构建覆盖<strong>人工智能、大数据、云计算、区块链、数字技术应用</strong>五个维度的示例子词典，共53个关键词（如"人工智能"维度含"机器学习""计算机视觉"等11词）。同时以TF-IDF统计全语料高权重词作主题抽查，验证语料聚焦度与词典覆盖面。需要说明的是，本文附带的示例子词典规模小于原始文献的完整词典，仅作方法示范；正式研究应使用经人工校订的完整权威词典，并对新增词进行语料回标验证。</p>
+        <p><strong>Step 4 测度计算</strong>：对每个企业—年份观测统计五个维度的词典词命中次数 W<sub>d</sub>，加总得到数字化总词频 W。为缓解篇幅差异与右偏分布的影响，构造两类测度：主测度取对数形式，见式(1)；稳健性测度取相对占比 Ratio = W/N，其中 N 为该文本分词后的有效词数。最终形成以企业代码与年份为双键的企业—年份面板数据。</p>
+        <p class="formula">Digital<sub>it</sub> = ln(1 + W<sub>it</sub>)　　(1)</p>
+        <p><strong>Step 5 信效度检验与实证应用</strong>：信度检验以五维度词频为"题项"计算Cronbach's α（见式(2)），考察测度的内部一致性；效度检验从两方面展开：一是维度结构效度佐证，考察五维度词频的两两相关（同属一个潜在构念的维度应显著正相关）；二是效标关联效度，将 Digital 对经营绩效（ROA）回归，考察测度是否具有理论预期的预测力。最后以"数字化转型→经营绩效"为示范性研究问题完成多元回归。</p>
+        <p class="formula">α = [k/(k-1)] · [1 − (Σs<sub>i</sub>²) / s<sub>t</sub>²]　　(2)</p>
+        <p>其中 k 为题项数（此处为5个维度），s<sub>i</sub>² 为第 i 个题项的方差，s<sub>t</sub>² 为总分的方差。</p>
+        <h3 id="toc-2-2">（二）变量定义</h3>
+        <table class="three-line-table">
+          <caption>表2-1　变量定义表</caption>
+          <thead>
+            <tr><th>变量类型</th><th>变量名</th><th>符号</th><th>定义与测度方法</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>被解释变量</td><td>总资产收益率</td><td>ROA</td><td>净利润/总资产（演示数据）</td></tr>
+            <tr><td>被解释变量</td><td>营业收入增长率</td><td>Growth</td><td>（本期收入-上期收入）/上期收入（演示数据）</td></tr>
+            <tr><td>核心解释变量</td><td>数字化转型测度</td><td>Digital</td><td>ln(1+五维度词典词命中总次数)</td></tr>
+            <tr><td>稳健性变量</td><td>数字化词频占比</td><td>Ratio</td><td>五维度词频/有效词数</td></tr>
+            <tr><td>控制变量</td><td>企业规模</td><td>Size</td><td>ln(总资产)</td></tr>
+            <tr><td>控制变量</td><td>资产负债率</td><td>Lev</td><td>总负债/总资产</td></tr>
+            <tr><td>控制变量</td><td>企业年龄</td><td>Age</td><td>企业成立年数</td></tr>
+            <tr><td>固定效应</td><td>年份</td><td>Year</td><td>年份虚拟变量</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="section-results">
+        <h2 id="toc-3">三、实证分析</h2>
+        <h3 id="toc-3-1">（一）描述性统计</h3>
+        <p>表3-1报告了主要变量的描述性统计（N=300）。数字化转型测度 Digital 的均值为1.715，标准差0.879，最小值0，最大值3.219，分布右偏（中位数1.792），符合词频类变量的典型特征，也印证了对数化处理的必要性。词频占比 Ratio 均值为3.43%，即演示语料中数字化关键词约占全部有效词的3.4%。从时间趋势看（图1），数字化转型测度呈逐年上升态势，且行业梯度清晰：信息技术行业显著高于其他行业，制造业居中，批发零售、房地产次之，农林牧渔最低，与现实中不同行业数字化渗透率的差异方向一致，为测度的内容效度提供了直观佐证。</p>
+        <table class="three-line-table">
+          <caption>表3-1　主要变量描述性统计（N=300）</caption>
+          <thead>
+            <tr><th>变量</th><th>均值</th><th>标准差</th><th>最小值</th><th>中位数</th><th>最大值</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Digital</td><td>1.715</td><td>0.879</td><td>0.000</td><td>1.792</td><td>3.219</td></tr>
+            <tr><td>数字化总词频 W</td><td>6.787</td><td>6.038</td><td>0</td><td>5</td><td>24</td></tr>
+            <tr><td>Ratio</td><td>0.034</td><td>0.021</td><td>0.000</td><td>0.035</td><td>0.076</td></tr>
+            <tr><td>ROA</td><td>0.022</td><td>0.023</td><td>-0.047</td><td>0.021</td><td>0.091</td></tr>
+            <tr><td>Growth</td><td>0.089</td><td>0.081</td><td>-0.121</td><td>0.089</td><td>0.298</td></tr>
+            <tr><td>Size</td><td>23.107</td><td>1.215</td><td>21.005</td><td>23.045</td><td>25.201</td></tr>
+            <tr><td>Lev</td><td>0.436</td><td>0.123</td><td>0.192</td><td>0.440</td><td>0.697</td></tr>
+            <tr><td>Age</td><td>16.02</td><td>6.14</td><td>5</td><td>16</td><td>28</td></tr>
+          </tbody>
+        </table>
+        <figure>
+          <img src="images/fig1_年度趋势.png" alt="图1 企业数字化转型测度的年度趋势（分行业）" style="max-width: 100%;">
+          <figcaption>图1　企业数字化转型测度的年度趋势（分行业）</figcaption>
+        </figure>
+        <p>图2（测度分布直方图）显示 Digital 呈单峰分布，绝大多数观测集中于0.5—3.0区间，存在少量零值观测，对应年报中完全未提及数字化话题的企业情形，这一形态与既有基于真实年报的研究报告的分布特征一致。</p>
+        <figure>
+          <img src="images/fig2_测度分布.png" alt="图2 数字化转型测度的分布" style="max-width: 100%;">
+          <figcaption>图2　数字化转型测度的分布</figcaption>
+        </figure>
+        <h3 id="toc-3-2">（二）信度检验</h3>
+        <p>以五个维度词频（W_AI、W_BigData、W_Cloud、W_Blockchain、W_DigitalApp）作为测度"企业数字化转型"这一潜在构念的五个题项，计算得 <strong>Cronbach's α = 0.791</strong>。按照 α≥0.7 为可接受、α≥0.8 为良好的通行判断标准，本测度的内部一致性达到可接受水平，表明五个维度对同一构念的测量具有较好的一致性：年报中数字化程度高的企业，倾向于在各个技术维度上均有更多披露，而非仅在单一维度孤立出现。</p>
+        <h3 id="toc-3-3">（三）效度检验</h3>
+        <p><strong>维度结构佐证</strong>：表3-2报告五维度词频的Pearson相关矩阵，相关系数介于0.353—0.536之间且均在1%水平显著为正（图3），说明五个维度同向变动、共同指向"数字化转型"这一潜在构念，同时相关系数未高度重合（均低于0.6），各维度保留了相对独立的信息，支持"分维度构建、加总合成"的测度策略。</p>
+        <table class="three-line-table">
+          <caption>表3-2　五维度词频相关矩阵（下三角，N=300）</caption>
+          <thead>
+            <tr><th>维度</th><th>人工智能</th><th>大数据</th><th>云计算</th><th>区块链</th><th>数字技术应用</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>人工智能</td><td>1.00</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>大数据</td><td>0.521</td><td>1.00</td><td></td><td></td><td></td></tr>
+            <tr><td>云计算</td><td>0.392</td><td>0.415</td><td>1.00</td><td></td><td></td></tr>
+            <tr><td>区块链</td><td>0.535</td><td>0.396</td><td>0.369</td><td>1.00</td><td></td></tr>
+            <tr><td>数字技术应用</td><td>0.536</td><td>0.457</td><td>0.353</td><td>0.441</td><td>1.00</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">注：表中数值为流水线实际输出，均在1%水平显著。</p>
+        <figure>
+          <img src="images/fig3_维度相关.png" alt="图3 五维度词频相关矩阵" style="max-width: 82%;">
+          <figcaption>图3　五维度词频相关矩阵（效度佐证）</figcaption>
+        </figure>
+        <p><strong>效标关联效度</strong>：若测度有效，其应与理论上相关的结果变量（企业绩效）呈显著关系。图4的分组箱线图显示，按 Digital 三等分组后，高数字化组的ROA中位数系统性高于低数字化组，初步支持测度的效标关联效度；正式检验见（四）节回归分析。</p>
+        <figure>
+          <img src="images/fig4_分组比较.png" alt="图4 不同数字化水平的ROA分组比较" style="max-width: 88%;">
+          <figcaption>图4　不同数字化水平的ROA分组比较（演示数据）</figcaption>
+        </figure>
+        <h3 id="toc-3-4">（四）回归分析</h3>
+        <p>为检验测度的实证可用性并演示完整的"测度—结果"分析，本文估计如下多元回归模型：</p>
+        <p class="formula">ROA<sub>it</sub> = α + β·Digital<sub>it</sub> + γ·Controls<sub>it</sub> + λ<sub>t</sub> + ε<sub>it</sub>　　(3)</p>
+        <p>其中 λ<sub>t</sub> 为年份固定效应，标准误采用异方差稳健（HC1）估计。表3-3报告三列结果：列(1)为仅含核心解释变量的基准回归，Digital 系数为0.0106（t=6.95）；列(2)加入规模、杠杆、企业年龄与年份固定效应后，Digital 系数为0.0096（稳健标准误0.0016，t=6.16），在1%水平显著为正，模型R²为0.202；列(3)将被解释变量替换为营业收入增长率，Digital 系数0.0228（t=4.35）同样显著为正。经济含义上，以列(2)估计值计，数字化转型测度每提高一个标准差（0.879），ROA平均提升约0.84个百分点，相对于ROA均值（2.22%）提升明显。</p>
+        <table class="three-line-table">
+          <caption>表3-3　数字化转型与经营绩效：多元回归结果（N=300）</caption>
+          <thead>
+            <tr><th>变量</th><th>(1) ROA</th><th>(2) ROA</th><th>(3) Growth</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Digital</td><td>0.0106*** (6.95)</td><td>0.0096*** (6.16)</td><td>0.0228*** (4.35)</td></tr>
+            <tr><td>Size</td><td>—</td><td>控制</td><td>控制</td></tr>
+            <tr><td>Lev</td><td>—</td><td>控制</td><td>控制</td></tr>
+            <tr><td>Age</td><td>—</td><td>控制</td><td>控制</td></tr>
+            <tr><td>年份固定效应</td><td>否</td><td>是</td><td>是</td></tr>
+            <tr><td>R²</td><td>0.160</td><td>0.202</td><td>0.062</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">注：括号内为t值；***、**、*分别表示1%、5%、10%水平显著；标准误为HC1稳健标准误。</p>
+        <h3 id="toc-3-5">（五）稳健性讨论与结果解读</h3>
+        <p>稳健性方面可从三个方向延伸：其一，将被解释变量替换或测度替换，如以相对占比 Ratio 替代 Digital 重估回归，结论方向应保持一致；其二，改变分词方案（如去除自定义词、更换停用词表）重新计算测度，考察结果对预处理参数的敏感性；其三，考虑遗漏变量问题，真实研究中还应加入企业固定效应与行业×年份固定效应，并采用工具变量或滞后解释变量缓解反向因果。需要再次强调，本文回归基于演示数据，其显著结果源自数据生成设计中植入的相关结构，<strong>旨在演示"测度构建→信效度检验→回归应用"的完整链条，不构成对真实世界因果关系的证据</strong>；使用真实年报与财务数据后，上述稳健性设计方具备实质意义。</p>
+      </div>
+
+      <div id="section-conclusion">
+        <h2 id="toc-4">四、结论与展望</h2>
+        <h3 id="toc-4-1">（一）主要发现</h3>
+        <p>本文以"企业数字化转型"为研究对象，完整演示了NLP文本测度构建的五步流水线，得到三点主要发现：第一，方法可行性方面，从原始文本到企业—年份面板的五个环节均可脚本化、可复现，词典词频法在中文年报语料上易于实施且成本可控；第二，测度质量方面，五维度词频结构的Cronbach's α为0.791、维度间相关0.353—0.536且均显著为正，测度同时通过了内部一致性与维度结构的检验，且对演示绩效变量表现出预期的显著关联，表明"词典法+信效度检验"可以作为文本测度的标准工作流程；第三，方法价值方面，将信效度检验内嵌于流水线，有助于提高文本测度类研究的透明度与规范性，回应了当前文献中测量质量报告不足的缺口。</p>
+        <h3 id="toc-4-2">（二）局限性</h3>
+        <p>本文的局限主要有三：其一，数据层面，本文为课程模拟稿，语料与财务数据均为脚本生成的演示数据，行业分布与文本形态经过简化，测度的实际表现需在真实年报语料上重新检验；其二，词典层面，示例子词典仅53词，远小于完整权威词典，且未涵盖"数字化转型的反面表述"（如"数字化投入下降"）的语义极性问题，词频法也无法区分"说"与"做"的差距；其三，识别层面，示范性回归仅控制年份固定效应，未处理企业固定效应、反向因果与遗漏变量，回归系数不应作因果解释。</p>
+        <h3 id="toc-4-3">（三）未来展望</h3>
+        <p>后续研究可沿三个方向深化：一是数据升级，以巨潮资讯网真实年报MD&amp;A文本替换演示语料，将样本扩展至全部A股上市公司并延长观测区间；二是方法升级，在词典法之外引入词向量（Word2Vec）语义扩展与预训练语言模型（如BERT）语义分类，与词典法交叉验证以降低单一方法的测量误差；三是应用深化，将测度应用于数字化转型与创新投入、供应链韧性、劳动力结构等结果的因果识别研究，并探索"企业—年报—电话会议"多源文本的联合测度框架。</p>
+      </div>
+    </main>
+
+    <div class="references" id="toc-ref" aria-label="参考文献">
+      <h2>参考文献</h2>
+      <ol class="reference-list">
+        <li class="reference-item">吴非, 胡慧芷, 林慧妍, 等. 企业数字化转型与资本市场表现——来自股票流动性的经验证据<span class="ref-type">[J]</span>. 管理世界, 2021, 37(7): 130-144.</li>
+        <li class="reference-item">袁淳, 肖土盛, 耿春晓, 等. 数字化转型与企业分工：专业化还是纵向一体化<span class="ref-type">[J]</span>. 中国工业经济, 2021(9): 137-155.</li>
+        <li class="reference-item">赵宸宇, 王文春, 李雪松. 数字化转型如何影响企业全要素生产率<span class="ref-type">[J]</span>. 财贸经济, 2021, 42(7): 114-129.</li>
+        <li class="reference-item">VIAL G. Understanding digital transformation: a review and a research agenda<span class="ref-type">[J]</span>. The Journal of Strategic Information Systems, 2019, 28(2): 118-144.</li>
+        <li class="reference-item">LOUGHRAN T, MCDONALD B. When is a liability not a liability? Textual analysis, dictionaries, and 10-Ks<span class="ref-type">[J]</span>. The Journal of Finance, 2011, 66(1): 35-65.</li>
+        <li class="reference-item">CRONBACH L J. Coefficient alpha and the internal structure of tests<span class="ref-type">[J]</span>. Psychometrika, 1951, 16(3): 297-334.</li>
+        <li class="reference-item">SUN J Y. jieba: Chinese text segmentation<span class="ref-type">[CP/OL]</span>. [2026-09-21]. https://github.com/fxsjy/jieba.</li>
+      </ol>
+    </div>
+  </section>
+</body>
+</html>
