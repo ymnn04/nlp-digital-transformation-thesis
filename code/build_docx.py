@@ -223,6 +223,26 @@ while i < n:
         r = p.add_run(m.group(1) if m else line)
         r.font.size = Pt(11)
         set_cjk(r)
+        # 封面信息表（与 HTML 封面一致）
+        cover_rows = [
+            ("学　　校", "大连财经学院"),
+            ("学生姓名", "杨淼"),
+            ("学　　号", "202364036"),
+            ("指导教师", ""),
+        ]
+        tbl = doc.add_table(rows=0, cols=2)
+        tbl.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        tbl.style = "Table Grid"
+        for lab, val in cover_rows:
+            cells = tbl.add_row().cells
+            cells[0].text = lab
+            cells[1].text = val
+            for c in cells:
+                for pp in c.paragraphs:
+                    pp.alignment = WD_ALIGN_PARAGRAPH.LEFT
+                    for rr in pp.runs:
+                        rr.font.size = Pt(10.5)
+                        set_cjk(rr)
         i += 1
         continue
 
